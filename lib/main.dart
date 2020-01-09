@@ -14,6 +14,7 @@ class _TipCalculatorState extends State<TipCalculator> {
   num sliderValue = 0;
   num totalPerPerson = 0;
   num totalBillAmt = 250;
+  num totalTipAmnt = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Split"),
+                      Text("Split btn"),
                       Row(
                         children: <Widget>[
                           IconButton(
@@ -88,9 +89,9 @@ class _TipCalculatorState extends State<TipCalculator> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Tip"),
+                      Text("Total Tip"),
                       Text(
-                        "\$ $totalPerPerson",
+                        "\$ $totalTipAmnt",
                         style:
                             TextStyle(color: Colors.lightBlueAccent.shade100),
                       )
@@ -137,7 +138,7 @@ class _TipCalculatorState extends State<TipCalculator> {
   }
 
   void calculateTip(double newValue) {
-    num tip = totalBillAmt * (newValue.toInt() / 100);
-    totalPerPerson = tip ~/ peopleSplitting;
+    totalTipAmnt = totalBillAmt * (newValue.toInt() / 100);
+    totalPerPerson = totalTipAmnt ~/ peopleSplitting;
   }
 }
