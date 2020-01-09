@@ -10,11 +10,10 @@ class TipCalculator extends StatefulWidget {
 
 class _TipCalculatorState extends State<TipCalculator> {
   var selectorRange = RangeValues(0, 100);
-  num peopleSplitting = 0;
+  num peopleSplitting = 1;
   num sliderValue = 0;
   num totalPerPerson = 0;
-  num totalBillAmt = 0;
-  num splitAmount = 0;
+  num totalBillAmt = 250;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +66,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                       Row(
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.add),
+                            icon: Icon(Icons.remove),
                             onPressed: () {
                               reducePersonCount();
                             },
@@ -75,7 +74,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                           ),
                           Text('$peopleSplitting'),
                           IconButton(
-                            icon: Icon(Icons.remove),
+                            icon: Icon(Icons.add),
                             onPressed: () {
                               addPersonCount();
                             },
@@ -91,7 +90,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                     children: <Widget>[
                       Text("Tip"),
                       Text(
-                        "\$ $splitAmount",
+                        "\$ $totalPerPerson",
                         style:
                             TextStyle(color: Colors.lightBlueAccent.shade100),
                       )
@@ -106,6 +105,11 @@ class _TipCalculatorState extends State<TipCalculator> {
                     onChanged: (double newValue) {
                       setState(() {
                         sliderValue = newValue;
+                        if (newValue == 0) {
+                          totalPerPerson = 0;
+                          return;
+                        }
+                        calculateTip(sliderValue);
                       });
                     },
                   )
@@ -119,10 +123,21 @@ class _TipCalculatorState extends State<TipCalculator> {
   }
 
   void reducePersonCount() {
-    peopleSplitting = peopleSplitting == 0 ? 0 : peopleSplitting -= 1;
+    setState(() {
+      peopleSplitting = peopleSplitting == 1 ? 1 : peopleSplitting -= 1;
+      calculateTip(sliderValue);
+    });
   }
 
   void addPersonCount() {
-    peopleSplitting += 1;
+    setState(() {
+      peopleSplitting += 1;
+      calculateTip(sliderValue);
+    });
+  }
+
+  void calculateTip(double newValue) {
+    num tip = totalBillAmt * (newValue.toInt() / 100);
+    totalPerPerson = tip ~/ peopleSplitting;
   }
 }
