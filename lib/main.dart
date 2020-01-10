@@ -11,10 +11,11 @@ class TipCalculator extends StatefulWidget {
 class _TipCalculatorState extends State<TipCalculator> {
   var selectorRange = RangeValues(0, 100);
   num peopleSplitting = 1;
-  num sliderValue = 0;
+  num sliderValue = 0.0;
   num totalPerPerson = 0;
   num totalBillAmt = 250;
   num totalTipAmnt = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,7 @@ class _TipCalculatorState extends State<TipCalculator> {
           children: <Widget>[
             Container(
                 padding: EdgeInsets.fromLTRB(0, 50.0, 0, 50),
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                margin: EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
                     color: Colors.lightBlueAccent.shade100,
                     borderRadius: BorderRadius.circular(5)),
@@ -50,7 +51,8 @@ class _TipCalculatorState extends State<TipCalculator> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Row(children: <Widget>[
-                    Text("Bill Amount"),
+                    Text("Bill Amount",
+                        style: TextStyle(color: Colors.grey.shade700)),
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                     ),
@@ -63,23 +65,49 @@ class _TipCalculatorState extends State<TipCalculator> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Split btn"),
+                      Text("Split btn",
+                          style: TextStyle(color: Colors.grey.shade700)),
                       Row(
                         children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.remove),
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               reducePersonCount();
                             },
-                            color: Colors.lightBlueAccent.shade100,
+                            child: Container(
+                                width: 25,
+                                height: 25,
+                                color: Colors.lightBlueAccent.shade100,
+                                margin: EdgeInsets.all(10),
+                                child: Center(
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  ),
+                                )),
                           ),
-                          Text('$peopleSplitting'),
-                          IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
+                          Text('$peopleSplitting',
+                              style: TextStyle(color: Colors.grey.shade700)),
+                          InkWell(
+                            onTap: () {
                               addPersonCount();
                             },
-                            color: Colors.lightBlueAccent.shade100,
+                            child: Container(
+                                width: 25,
+                                height: 25,
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: Colors.lightBlueAccent.shade100,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: Text(
+                                    "+",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  ),
+                                )),
                           )
                         ],
                       ),
@@ -89,7 +117,8 @@ class _TipCalculatorState extends State<TipCalculator> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Total Tip"),
+                      Text("Total Tip",
+                          style: TextStyle(color: Colors.grey.shade700)),
                       Text(
                         "\$ $totalTipAmnt",
                         style:
@@ -137,7 +166,7 @@ class _TipCalculatorState extends State<TipCalculator> {
     });
   }
 
-  void calculateTip(double newValue) {
+  void calculateTip(num newValue) {
     totalTipAmnt = totalBillAmt * (newValue.toInt() / 100);
     totalPerPerson = totalTipAmnt ~/ peopleSplitting;
   }
