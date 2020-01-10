@@ -13,7 +13,7 @@ class _TipCalculatorState extends State<TipCalculator> {
   num peopleSplitting = 1;
   num sliderValue = 0.0;
   num totalPerPerson = 0;
-  num totalBillAmt = 250;
+  num totalBillAmt = 0;
   num totalTipAmnt = 0;
 
   @override
@@ -51,8 +51,17 @@ class _TipCalculatorState extends State<TipCalculator> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Row(children: <Widget>[
-                    Text("Bill Amount",
-                        style: TextStyle(color: Colors.grey.shade700)),
+                    Expanded(
+                      child: TextField(
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        style: TextStyle(color: Colors.grey.shade700),
+                        decoration: InputDecoration(prefixText: "Total Bill"),
+                        onChanged: (String str) {
+                          totalBillAmt = int.tryParse(str) ?? totalBillAmt;
+                        },
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                     ),
