@@ -1,6 +1,6 @@
 # tip_calculator
 
-<img src="./three.png" />
+<img src="./four.png" />
 
 ## Getting Started
 
