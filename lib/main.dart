@@ -59,6 +59,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                         decoration: InputDecoration(prefixText: "Total Bill"),
                         onChanged: (String str) {
                           totalBillAmt = int.tryParse(str) ?? totalBillAmt;
+                          calculateTip();
                         },
                       ),
                     ),
@@ -142,14 +143,12 @@ class _TipCalculatorState extends State<TipCalculator> {
                     value: sliderValue.toDouble(),
                     label: sliderValue.toString(),
                     onChanged: (double newValue) {
-                      setState(() {
-                        sliderValue = newValue;
-                        if (newValue == 0) {
-                          totalPerPerson = 0;
-                          return;
-                        }
-                        calculateTip(sliderValue);
-                      });
+                      sliderValue = newValue;
+                      if (newValue == 0) {
+                        totalPerPerson = 0;
+                        return;
+                      }
+                      calculateTip();
                     },
                   )
                 ],
@@ -164,19 +163,21 @@ class _TipCalculatorState extends State<TipCalculator> {
   void reducePersonCount() {
     setState(() {
       peopleSplitting = peopleSplitting == 1 ? 1 : peopleSplitting -= 1;
-      calculateTip(sliderValue);
+      calculateTip();
     });
   }
 
   void addPersonCount() {
     setState(() {
       peopleSplitting += 1;
-      calculateTip(sliderValue);
+      calculateTip();
     });
   }
 
-  void calculateTip(num newValue) {
-    totalTipAmnt = totalBillAmt * (newValue.toInt() / 100);
-    totalPerPerson = totalTipAmnt ~/ peopleSplitting;
+  void calculateTip() {
+    setState(() {
+      totalTipAmnt = totalBillAmt * (sliderValue.toInt() / 100);
+      totalPerPerson = totalTipAmnt ~/ peopleSplitting;
+    });
   }
 }
